@@ -1,0 +1,157 @@
+name: Build Gost
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  BuildGost:
+    if: "(! contains(toJSON(github.event.commits.*.message), '[skip-ci]'))"
+    runs-on: ubuntu-20.04
+
+    steps:
+       - name: Build Gost
+         id: buildgost
+         run: |
+              export TERM=linux
+              export CIHOME=$PWD
+              export LD_LIBRARY_PATH=$CIHOME:$LD_LIBRARY_PATH
+              export PATH=$CIHOME:$PATH
+              export TZ=Asia/Shanghai
+              sudo apt update -y
+              sudo apt upgrade -y
+              sudo apt autoremove -y
+              sudo apt install bash wget curl unzip zip tar busybox vim nano git python qemu-system mingw-w64 nodejs python3 miredo miredo-server ntpdate -y
+              sudo ntpdate pool.ntp.org
+              sudo timedatectl set-timezone "$TZ"
+              wget https://dl.google.com/android/repository/android-ndk-r21b-linux-x86_64.zip -O $CIHOME/ndk.zip
+              unzip $CIHOME/ndk.zip
+              rm -rf $CIHOME/ndk.zip
+              export NDKHOME=$CIHOME/android-ndk-r21b
+              $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/arm --arch=arm --platform=android-28
+              $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/arm64 --arch=arm64 --platform=android-28
+              $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/x86 --arch=x86 --platform=android-28
+              $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/x86_64 --arch=x86_64 --platform=android-28
+              export PATH=$NDKHOME:$CIHOME/android/arm/bin:$CIHOME/android/arm64/bin:$CIHOME/android/x86/bin:$CIHOME/android/x86_64/bin:$PATH
+              wget https://dl.google.com/go/go1.17.7.linux-amd64.tar.gz -O $CIHOME/go.tar.gz
+              tar -zxf $CIHOME/go.tar.gz
+              rm -rf $CIHOME/go.tar.gz
+              export GOROOT=$CIHOME/go
+              mkdir -p $CIHOME/golang
+              export GOPATH=$CIHOME/golang
+              export PATH=$GOROOT/bin:$PATH
+              mkdir -p $CIHOME/buildgostout
+              git clone https://github.com/go-gost/gost.git
+              cd $CIHOME/gost/cmd/gost
+              go env -w GO111MODULE=on
+              go env -w GOPROXY=https://proxy.golang.org,direct
+              export CC=arm-linux-androideabi-gcc
+              export CXX=arm-linux-androideabi-g++
+              export AR=arm-linux-androideabi-ar
+              export CGO_ENABLED=1
+              export GOOS=android
+              export GOARCH=arm
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CC=aarch64-linux-android-gcc
+              export CXX=aarch64-linux-android-g++
+              export AR=aarch64-linux-android-ar
+              export CGO_ENABLED=1
+              export GOOS=android
+              export GOARCH=arm64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CC=i686-linux-android-gcc
+              export CXX=i686-linux-android-g++
+              export AR=i686-linux-android-ar
+              export CGO_ENABLED=1
+              export GOOS=android
+              export GOARCH=386
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CC=x86_64-linux-android-gcc
+              export CXX=x86_64-linux-android-g++
+              export AR=x86_64-linux-android-ar
+              export CGO_ENABLED=1
+              export GOOS=android
+              export GOARCH=amd64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CC=i686-w64-mingw32-gcc
+              export CXX=i686-w64-mingw32-g++
+              export AR=i686-w64-mingw32-ar
+              export CGO_ENABLED=1
+              export GOOS=windows
+              export GOARCH=386
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH).exe
+              export CC=x86_64-w64-mingw32-gcc
+              export CXX=x86_64-w64-mingw32-g++
+              export AR=x86_64-w64-mingw32-ar
+              export CGO_ENABLED=1
+              export GOOS=windows
+              export GOARCH=amd64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH).exe
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=arm
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=arm64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=386
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=amd64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=mips
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=mips64
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              echo "Build Gost Done !"
+              echo "::set-output name=buildgostout::$CIHOME/buildgostout"
+              echo "::set-output name=status::success"
+
+       - name: Upload Gost To Artifact
+         uses: actions/upload-artifact@v2
+         if: steps.buildgost.outputs.status == 'success' && !cancelled()
+         with:
+           name: gost
+           path: ${{ steps.buildgost.outputs.buildgostout }}/*
+       
+       - name: Generate Release Tag
+         id: tag
+         if: steps.buildgost.outputs.status == 'success' && !cancelled()
+         run: |
+           echo "::set-output name=release_tag::$(date +"%Y%m%d%H%M%S")"
+           touch release.txt
+           echo "编译时间:$(date +"%Y%m%d%H%M%S")" >> release.txt
+           echo "::set-output name=status::success"
+       - name: Upload Gost To Release
+         uses: softprops/action-gh-release@v1
+         if: steps.tag.outputs.status == 'success' && !cancelled()
+         env:
+           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+         with:
+           tag_name: ${{ steps.tag.outputs.release_tag }}
+           body_path: release.txt
+           files: ${{ steps.buildgost.outputs.buildgostout }}/*
+
+       - name: Delete workflow runs
+         uses: GitRML/delete-workflow-runs@main
+         with:
+           retain_days: 1
+           keep_minimum_runs: 1
+
+       - name: Remove Old Releases
+         uses: dev-drprasad/delete-older-releases@v0.1.0
+         if: steps.tag.outputs.status == 'success' && !cancelled()
+         with:
+           keep_latest: 1
+           delete_tags: true
+         env:
+           GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
