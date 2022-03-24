@@ -43,7 +43,7 @@ jobs:
               export GOPATH=$CIHOME/golang
               export PATH=$GOROOT/bin:$PATH
               mkdir -p $CIHOME/buildgostout
-              git clone https://github.com/go-gost/gost.git
+              git clone --depth=1 -b master https://github.com/go-gost/gost.git $CIHOME/gost/
               cd $CIHOME/gost/cmd/gost
               go env -w GO111MODULE=on
               go env -w GOPROXY=https://proxy.golang.org,direct
@@ -115,6 +115,9 @@ jobs:
               go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
               echo "Build Gost Done !"
               echo "::set-output name=buildgostout::$CIHOME/buildgostout"
+              echo "::set-output name=gostsrc::$CIHOME/gost/"
+              echo "::set-output name=gostgitsha::$(cd $CIHOME/gost/ && git rev-parse HEAD)"
+              echo "::set-output name=gostgitshashort::$(cd $CIHOME/gost/ && git rev-parse --short HEAD)"
               echo "::set-output name=status::success"
 
        - name: Upload Gost To Artifact
@@ -131,6 +134,9 @@ jobs:
            echo "::set-output name=release_tag::$(date +"%Y%m%d%H%M%S")"
            touch release.txt
            echo "编译时间:$(date +"%Y%m%d%H%M%S")" >> release.txt
+           echo "gost git sha short:$(cd gost && git rev-parse --short HEAD)" >> release.txt
+           echo "gost git sha:$(cd gost && git rev-parse HEAD)" >> release.txt
+           echo "源码地址:https://github.com/go-gost/gost/tree/$(cd gost && git rev-parse HEAD)" >> release.txt
            echo "::set-output name=status::success"
        - name: Upload Gost To Release
          uses: softprops/action-gh-release@v1
