@@ -35,7 +35,7 @@ jobs:
               $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/x86 --arch=x86 --platform=android-28
               $NDKHOME/build/tools/make-standalone-toolchain.sh --install-dir=$CIHOME/android/x86_64 --arch=x86_64 --platform=android-28
               export PATH=$NDKHOME:$CIHOME/android/arm/bin:$CIHOME/android/arm64/bin:$CIHOME/android/x86/bin:$CIHOME/android/x86_64/bin:$PATH
-              wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz -O $CIHOME/go.tar.gz
+              wget https://dl.google.com/go/go1.18.1.linux-amd64.tar.gz -O $CIHOME/go.tar.gz
               tar -zxf $CIHOME/go.tar.gz
               rm -rf $CIHOME/go.tar.gz
               export GOROOT=$CIHOME/go
