@@ -107,11 +107,11 @@ jobs:
               go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
               export CGO_ENABLED=0
               export GOOS=linux
-              export GOARCH=mips
+              export GOARCH=mipsel
               go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
               export CGO_ENABLED=0
               export GOOS=linux
-              export GOARCH=mips64
+              export GOARCH=mips64el
               go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
               echo "Build Gost Done !"
               echo "::set-output name=buildgostout::$CIHOME/buildgostout"
