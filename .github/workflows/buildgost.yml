@@ -56,66 +56,7 @@ jobs:
               export CGO_ENABLED=1
               export GOOS=android
               export GOARCH=arm
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CC=aarch64-linux-android-gcc
-              export CXX=aarch64-linux-android-g++
-              export AR=aarch64-linux-android-ar
-              export CGO_ENABLED=1
-              export GOOS=android
-              export GOARCH=arm64
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CC=i686-linux-android-gcc
-              export CXX=i686-linux-android-g++
-              export AR=i686-linux-android-ar
-              export CGO_ENABLED=1
-              export GOOS=android
-              export GOARCH=386
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CC=x86_64-linux-android-gcc
-              export CXX=x86_64-linux-android-g++
-              export AR=x86_64-linux-android-ar
-              export CGO_ENABLED=1
-              export GOOS=android
-              export GOARCH=amd64
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CC=i686-w64-mingw32-gcc
-              export CXX=i686-w64-mingw32-g++
-              export AR=i686-w64-mingw32-ar
-              export CGO_ENABLED=1
-              export GOOS=windows
-              export GOARCH=386
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH).exe
-              export CC=x86_64-w64-mingw32-gcc
-              export CXX=x86_64-w64-mingw32-g++
-              export AR=x86_64-w64-mingw32-ar
-              export CGO_ENABLED=1
-              export GOOS=windows
-              export GOARCH=amd64
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH).exe
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=arm
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=arm64
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=386
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=amd64
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=mipsle
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
-              export CGO_ENABLED=0
-              export GOOS=linux
-              export GOARCH=mips64le
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              df -mh
               echo "Build Gost Done !"
               echo "::set-output name=buildgostout::$CIHOME/buildgostout"
               echo "::set-output name=gostsrc::$CIHOME/gost/"
