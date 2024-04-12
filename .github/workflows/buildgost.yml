@@ -121,12 +121,26 @@ jobs:
               export CGO_ENABLED=0
               export GOOS=linux
               export GOARCH=mipsle
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export GOMIPS=softfloat
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)_$(go env GOMIPS)
+              go clean -cache
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=mipsle
+              export GOMIPS=hardfloat
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)_$(go env GOMIPS)
               go clean -cache
               export CGO_ENABLED=0
               export GOOS=linux
               export GOARCH=mips64le
-              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)
+              export GOMIPS=softfloat
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)_$(go env GOMIPS)
+              go clean -cache
+              export CGO_ENABLED=0
+              export GOOS=linux
+              export GOARCH=mips64le
+              export GOMIPS=hardfloat
+              go build -o $CIHOME/buildgostout/gost_$(go env GOOS)_$(go env GOARCH)_$(go env GOMIPS)
               go clean -cache
               echo "Build Gost Done !"
               echo "::set-output name=buildgostout::$CIHOME/buildgostout"
