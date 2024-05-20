@@ -184,7 +184,7 @@ jobs:
            keep_minimum_runs: 1
 
        - name: Remove Old Releases
-         uses: dev-drprasad/delete-older-releases@v0.3.3
+         uses: dev-drprasad/delete-older-releases@v0.3.4
          if: steps.tag.outputs.status == 'success' && !cancelled()
          with:
            keep_latest: 1
