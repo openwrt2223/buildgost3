@@ -139,8 +139,4 @@ echo "::set-output name=gostsrc::$CIHOME/gost/"
 echo "::set-output name=gostgitsha::$(cd $CIHOME/gost/ && git rev-parse HEAD)"
 echo "::set-output name=gostgitshashort::$(cd $CIHOME/gost/ && git rev-parse --short HEAD)"
 echo "::set-output name=status::success"
-df -mh
-df -ih
-free -mh
-$CC -V
 
