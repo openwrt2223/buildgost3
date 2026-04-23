@@ -40,7 +40,7 @@ jobs:
            echo "源码地址:https://github.com/go-gost/gost/tree/$(cd gost && git rev-parse HEAD)" >> release.txt
            echo "::set-output name=status::success"
        - name: Upload Gost To Release
-         uses: softprops/action-gh-release@v2
+         uses: softprops/action-gh-release@v3
          if: steps.tag.outputs.status == 'success' && !cancelled()
          env:
            GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
