@@ -13,7 +13,7 @@ unzip $CIHOME/ndk.zip
 rm -rf $CIHOME/ndk.zip
 export ANDROID_NDK_ROOT=$CIHOME/android-ndk-r29
 export PATH=$ANDROID_NDK_ROOT:$PATH
-wget https://dl.google.com/go/go1.25.3.linux-amd64.tar.gz -O $CIHOME/go.tar.gz
+wget https://dl.google.com/go/go1.26.2.linux-amd64.tar.gz -O $CIHOME/go.tar.gz
 tar -zxf $CIHOME/go.tar.gz
 rm -rf $CIHOME/go.tar.gz
 export GOROOT=$CIHOME/go
